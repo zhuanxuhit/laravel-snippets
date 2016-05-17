@@ -19,9 +19,9 @@ class Simple {
     protected $rate = 5;
 
     /**
-     * @type \swoole_lock
+     * @type \swoole_table
      */
-    protected $lock;
+    protected $table;
 
     /**
      * Simple constructor.
@@ -32,8 +32,7 @@ class Simple {
     {
         $this->http = new \swoole_http_server('0.0.0.0',$port);
         $this->http->on('request',array($this,'onRequest'));
-
-        $this->lock = new \swoole_lock(SWOOLE_MUTEX);
+        $this->table = new \swoole_table(1);
     }
 
     public function serverInfoDebug()
@@ -52,27 +51,18 @@ class Simple {
     {
         $currentTime = microtime(true);
         $pid =($this->http->worker_pid);
-
-
-
-        echo "start lock\n";
-        $this->lock->lock();
-        echo "lock success\n";
-        sleep(rand(1,5));
-        array_map(function ($x) {
-            (new Dumper)->dump($x);
-        }, [$this]);
-        $lastTime = $this->lastTime;
+        $this->table->lock();
+        $lastTime = $this->table->get( 'lastTime' );
+        $lastTime = $lastTime['lastTime'];
         if(($currentTime-$lastTime)<1/$this->rate){
-            $this->lock->unlock();
-
+            $this->table->unlock();
             $response->header("Content-Type", "text/html; charset=utf-8");
             $response->end("<h1>Access deny. #".rand(1000, 9999)."</h1>");
             echo "deny worker_pid: $pid lastTime:$lastTime currentTime:$currentTime\n";
         }
         else {
-            $this->lastTime = $currentTime;
-            $this->lock->unlock();
+            $this->table->set( 'lastTime', [ 'lastTime' => $currentTime] );
+            $this->table->unlock();
 
             $response->header("Content-Type", "text/html; charset=utf-8");
             $response->end($this->serverInfoDebug());
@@ -82,7 +72,10 @@ class Simple {
 
     public function start()
     {
-        $this->http->set(array('worker_num' => 5));
+        $this->table->column( 'lastTime', \swoole_table::TYPE_FLOAT );
+        $this->table->create();
+        $this->http->set(array('worker_num' => 2));
+        $this->table->set( 'lastTime', ['lastTime'=>0]);
         $this->http->start();
     }
 }
