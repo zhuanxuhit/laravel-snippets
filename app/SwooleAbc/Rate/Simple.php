@@ -5,7 +5,7 @@ require __DIR__.'/../../../vendor/autoload.php';
 use Illuminate\Support\Debug\Dumper;
 
 /**
- * 下面代码的问题是:由于是多个进程,所以子进程继承了父进程的Simple
+ * 下面代码的问题是:由于是多个进程,所以子进程继承了父进程的Simple,需要使用table来完成进程间的共享内存
  * Class Simple
  *
  * @package Swoole\Rate
