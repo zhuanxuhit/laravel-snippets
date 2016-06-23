@@ -48,6 +48,9 @@ $app = require_once __DIR__.'/../bootstrap/app.php';
 */
 //!! 一旦有了application,我们就可以创建出 Kernel,并通过Kernel来处理用户请求
 //!! 此处实例化出来的Kernel实作是:App\Http\Kernel,继承自Illuminate\Foundation\Http\Kernel
+/**
+ * @var App\Http\Kernel $kernel
+ */
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
 //!! handle方法是在Illuminate\Foundation\Http\Kernel实现的
