@@ -32,7 +32,10 @@ require __DIR__.'/../bootstrap/autoload.php';
 | the responses back to the browser and delight our users.
 |
 */
-//!! 启动真个框架,进行一些初始化,返回了 Illuminate\Foundation\Application 对象
+//!! 启动整个个框架,进行一些初始化,返回了 Illuminate\Foundation\Application 对象
+/**
+ * @var Illuminate\Foundation\Application $app
+ */
 $app = require_once __DIR__.'/../bootstrap/app.php';
 
 /*

@@ -23,7 +23,8 @@
         "psr-4": {
             "App\\": "app/",
             "VideoRental\\":"app/VideoRental/",
-            "Swoole\\":"app/SwooleAbc/"
+            "Swoole\\":"app/SwooleAbc/",
+            "GameDemo\\":"app/GameDemo/"
         },
         "psr-0": {
             "Impl":"app"
