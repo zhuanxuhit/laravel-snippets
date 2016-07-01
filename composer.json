@@ -24,7 +24,8 @@
             "App\\": "app/",
             "VideoRental\\":"app/VideoRental/",
             "Swoole\\":"app/SwooleAbc/",
-            "GameDemo\\":"app/GameDemo/"
+            "GameDemo\\":"app/GameDemo/",
+            "Talking\\":"app/Talking/"
         },
         "psr-0": {
             "Impl":"app"
